@@ -1,0 +1,53 @@
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# IDE & Editor
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Backend
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+backend/.mvn/wrapper/maven-wrapper.properties
+backend/logs/
+backend/*.log
+backend/dependency-reduced-pom.xml
+backend/.sts4-cache/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.cache/
+frontend/build/
+frontend/coverage/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Database
+*.sql
+dump.sql
+
+# Uploads
+uploads/
+*.jar
+*.war
+
+# Temporary files
+.tmp/
+temp/
+*.bak

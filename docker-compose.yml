@@ -1,0 +1,67 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: freelance-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: freelance_marketplace
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      TZ: UTC
+    ports: []
+    volumes:
+      - mysql-data:/var/lib/mysql
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: freelance-backend
+    restart: unless-stopped
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/freelance_marketplace?useSSL=false&allowPublicKeyRetrieval=true
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET}
+      SPRING_PROFILES_ACTIVE: prod
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      # Increase heap if needed
+      JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=75"
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads-data:/app/uploads
+    # If backend serves under /api, nothing else needed.
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-/api}
+        RAZORPAY_PUBLIC_KEY_ID: ${RAZORPAY_KEY_ID}
+    container_name: freelance-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    environment:
+      # Vite reads this at build time; keep it here for documentation and local overrides.
+      VITE_API_URL: ${VITE_API_URL:-/api}
+      RAZORPAY_PUBLIC_KEY_ID: ${RAZORPAY_KEY_ID}
+
+volumes:
+  mysql-data:
+  uploads-data:
