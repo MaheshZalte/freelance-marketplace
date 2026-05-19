@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Cache deps
 COPY mvnw .
-COPY .mvn .mvn
+# COPY .mvn .mvn
 COPY pom.xml .
 RUN chmod +x ./mvnw || true
 RUN ./mvnw -q -DskipTests dependency:go-offline || true
