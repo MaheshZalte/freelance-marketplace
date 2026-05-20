@@ -27,7 +27,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception {
 
         http
                 .cors(cors -> {
@@ -52,6 +54,9 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/uploads/**"
                 ).permitAll()
+                .requestMatchers(
+                        "/api/payments/**"
+                ).authenticated()
                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(
