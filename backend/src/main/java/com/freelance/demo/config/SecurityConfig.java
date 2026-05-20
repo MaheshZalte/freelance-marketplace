@@ -52,9 +52,6 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/uploads/**"
                 ).permitAll()
-                .requestMatchers(
-                        "/api/payments/**"
-                ).authenticated()
                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(

@@ -14,14 +14,10 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
-        CorsConfiguration configuration
-                = new CorsConfiguration();
+        CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(
-                List.of(
-                        "https://freelance-marketplace-ebon.vercel.app",
-                        "https://freelance-marketplace-5a5wbrgy1-mahesh-zaltes-projects.vercel.app"
-                )
+        configuration.setAllowedOriginPatterns(
+                List.of("*")
         );
 
         configuration.setAllowedMethods(
