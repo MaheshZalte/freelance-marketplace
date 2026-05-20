@@ -56,7 +56,7 @@ public class JwtFilter extends OncePerRequestFilter {
                                 email,
                                 null,
                                 Collections.singletonList(
-                                        new SimpleGrantedAuthority(role)
+                                        new SimpleGrantedAuthority("ROLE_" + role)
                                 )
                         );
 
