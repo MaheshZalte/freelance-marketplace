@@ -19,44 +19,32 @@ import { updateOnlineStatus } from "./services/authService";
 
 import { useEffect } from "react";
 
-import { getToken, isAuthenticated } from "./utils/auth";
+import { isAuthenticated } from "./utils/auth";
 import MyApplications from "./pages/MyApplications";
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 function App() {
   useEffect(() => {
     if (!isAuthenticated()) {
       return;
     }
+
     updateOnlineStatus(true);
+
     const handleOffline = () => {
-      const token = getToken();
-      if (!token) {
-        return;
-      }
-      fetch(
-        `${API_URL}/users/status?online=false`,
-
-        {
-          method: "PUT",
-
-          keepalive: true,
-
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      ).catch(() => {});
+      updateOnlineStatus(false).catch(() => {});
     };
 
     window.addEventListener("beforeunload", handleOffline);
+
     window.addEventListener("pagehide", handleOffline);
+
     return () => {
       window.removeEventListener("beforeunload", handleOffline);
+
       window.removeEventListener("pagehide", handleOffline);
     };
   }, []);
+
 
   return (
     <BrowserRouter>
@@ -81,7 +69,7 @@ function App() {
         <Route
           path="/chat/:contractId"
           element={
-            <ProtectedRoute> 
+            <ProtectedRoute>
               <Chat />
             </ProtectedRoute>
           }

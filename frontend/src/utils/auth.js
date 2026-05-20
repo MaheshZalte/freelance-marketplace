@@ -1,14 +1,12 @@
-import { jwtDecode } from "jwt-decode";
-
-// Use same API base as the rest of the frontend services
-const API_URL = import.meta.env.VITE_API_URL;
-console.log("API_URL =", API_URL);
-
+import { jwtDecode }
+  from "jwt-decode";
 
 export const getUserData = () => {
 
   const token =
-    localStorage.getItem("token");
+    localStorage.getItem(
+      "token"
+    );
 
   if (!token) {
     return null;
@@ -27,39 +25,22 @@ export const getToken = () => {
 export const getUser = () => {
 
   const user =
-    localStorage.getItem("user");
+    localStorage.getItem(
+      "user"
+    );
 
   return user
     ? JSON.parse(user)
     : null;
 };
 
-export const isAuthenticated = () => {
-  return !!getToken();
+export const isAuthenticated =
+  () => {
+
+    return !!getToken();
 };
 
 export const logout = () => {
-
-
-  const token =
-    localStorage.getItem(
-      "token"
-    );
-
-  if (token) {
-
-    fetch(
-      `${API_URL}/users/online?online=false`,
-      {
-        method: "PUT",
-        keepalive: true,
-        headers: {
-          Authorization:
-            `Bearer ${token}`,
-        },
-      },
-    ).catch(() => {});
-  }
 
   localStorage.removeItem(
     "token"
@@ -72,5 +53,3 @@ export const logout = () => {
   window.location.href =
     "/login";
 };
-
-
