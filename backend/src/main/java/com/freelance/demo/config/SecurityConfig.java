@@ -1,6 +1,5 @@
 package com.freelance.demo.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,8 +15,6 @@ import com.freelance.demo.security.JwtFilter;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
-
-    @Value("${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}")
 
     @Bean
     public JwtFilter jwtFilter() {
@@ -67,5 +64,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }
