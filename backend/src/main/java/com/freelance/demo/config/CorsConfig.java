@@ -1,17 +1,20 @@
 package com.freelance.demo.config;
 
+import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
-@Order(0)
 public class CorsConfig {
+
+    @Value("${CORS_ALLOWED_ORIGINS}")
+    private String corsAllowedOrigins;
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -19,8 +22,12 @@ public class CorsConfig {
         CorsConfiguration configuration
                 = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(
-                List.of("*")
+        configuration.setAllowedOrigins(
+                Arrays.stream(
+                        corsAllowedOrigins.split(",")
+                )
+                        .map(String::trim)
+                        .toList()
         );
 
         configuration.setAllowedMethods(

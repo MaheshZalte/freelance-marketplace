@@ -26,22 +26,22 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        if (request.getServletPath().startsWith("/api/auth/")) {
+        if (request.getServletPath().startsWith("/api/auth/")
+                || request.getMethod().equals("OPTIONS")
+                || request.getServletPath().startsWith("/ws/")) {
+
             filterChain.doFilter(request, response);
             return;
         }
 
-        if (request.getMethod().equals("OPTIONS")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
         String authHeader
                 = request.getHeader("Authorization");
 
         if (authHeader != null
                 && authHeader.startsWith("Bearer ")) {
 
-            String token = authHeader.substring(7);
+            String token
+                    = authHeader.substring(7);
 
             try {
 
@@ -56,7 +56,7 @@ public class JwtFilter extends OncePerRequestFilter {
                                 email,
                                 null,
                                 Collections.singletonList(
-                                        new SimpleGrantedAuthority("ROLE_" + role)
+                                        new SimpleGrantedAuthority(role)
                                 )
                         );
 
@@ -65,9 +65,13 @@ public class JwtFilter extends OncePerRequestFilter {
                         .setAuthentication(authentication);
 
             } catch (Exception e) {
-                // Intentionally do not leak token details to clients/logs in plaintext.
-            }
 
+                response.setStatus(
+                        HttpServletResponse.SC_UNAUTHORIZED
+                );
+
+                return;
+            }
         }
 
         filterChain.doFilter(request, response);

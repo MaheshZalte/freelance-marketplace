@@ -22,8 +22,7 @@ public class SecurityConfig {
     public SecurityConfig(
             CorsConfigurationSource corsConfigurationSource
     ) {
-        this.corsConfigurationSource
-                = corsConfigurationSource;
+        this.corsConfigurationSource = corsConfigurationSource;
     }
 
     @Bean
@@ -57,7 +56,8 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/api/auth/**"
                 ).permitAll()
-                .requestMatchers("/api/ws/**"
+                .requestMatchers(
+                        "/ws/**"
                 ).permitAll()
                 .requestMatchers(
                         "/uploads/**"
