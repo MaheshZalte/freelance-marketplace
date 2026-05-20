@@ -19,7 +19,8 @@ public class CorsConfig {
 
         configuration.setAllowedOrigins(
                 List.of(
-                        "https://freelance-marketplace-ebon.vercel.app"
+                        "https://freelance-marketplace-ebon.vercel.app",
+                        "https://freelance-marketplace-5a5wbrgy1-mahesh-zaltes-projects.vercel.app"
                 )
         );
 
