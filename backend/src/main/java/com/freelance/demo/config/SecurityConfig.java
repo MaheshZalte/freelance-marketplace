@@ -23,7 +23,7 @@ import com.freelance.demo.security.JwtFilter;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Value("${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173,http://localhost}")
+    @Value("${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}")
     private String corsAllowedOrigins;
 
     @Bean
@@ -33,7 +33,6 @@ public class SecurityConfig {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
@@ -45,15 +44,24 @@ public class SecurityConfig {
                 })
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session
-                        -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        -> session.sessionCreationPolicy(
+                        SessionCreationPolicy.STATELESS
+                )
                 )
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(
+                        HttpMethod.OPTIONS,
+                        "/**"
+                ).permitAll()
                 .requestMatchers(
                         "/api/auth/**"
                 ).permitAll()
-                .requestMatchers("/ws/**").permitAll()
-                .requestMatchers("/uploads/**").permitAll()
+                .requestMatchers(
+                        "/ws/**"
+                ).permitAll()
+                .requestMatchers(
+                        "/uploads/**"
+                ).permitAll()
                 .requestMatchers(
                         "/api/payments/**"
                 ).authenticated()
@@ -67,25 +75,45 @@ public class SecurityConfig {
         return http.build();
     }
 
-//     @Bean
-//     public CorsConfigurationSource corsConfigurationSource() {
-//         CorsConfiguration configuration = new CorsConfiguration();
-//         configuration.setAllowedOrigins(
-//                 Arrays.stream(corsAllowedOrigins.split(","))
-//                         .map(String::trim)
-//                         .filter(origin -> !origin.isBlank())
-//                         .toList()
-//         );
-//         configuration.setAllowedMethods(
-//                 List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//         );
-//         configuration.setAllowedHeaders(
-//                 List.of("*")
-//         );
-//         configuration.setAllowCredentials(true);
-//         UrlBasedCorsConfigurationSource source =
-//                 new UrlBasedCorsConfigurationSource();
-//         source.registerCorsConfiguration("/**", configuration);
-//         return source;
-//     }
-// }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration configuration
+                = new CorsConfiguration();
+
+        configuration.setAllowedOrigins(
+                Arrays.stream(
+                        corsAllowedOrigins.split(",")
+                )
+                        .map(String::trim)
+                        .filter(origin -> !origin.isBlank())
+                        .toList()
+        );
+
+        configuration.setAllowedMethods(
+                List.of(
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                )
+        );
+
+        configuration.setAllowedHeaders(
+                List.of("*")
+        );
+
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source
+                = new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration(
+                "/**",
+                configuration
+        );
+
+        return source;
+    }
+}
