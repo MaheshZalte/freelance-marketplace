@@ -41,32 +41,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .cors(cors -> {})
+                .cors(cors -> {
+                })
                 .csrf(csrf -> csrf.disable())
-
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement(session
+                        -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-
                 .authorizeHttpRequests(auth -> auth
-
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-                        .requestMatchers(
-                                "/api/auth/**"
-                        ).permitAll()
-
-                        .requestMatchers("/ws/**").permitAll()
-
-                        .requestMatchers("/uploads/**").permitAll()
-
-                        .requestMatchers(
-                                "/api/payments/**"
-                        ).authenticated()
-
-                        .anyRequest().authenticated()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(
+                        "/api/auth/**"
+                ).permitAll()
+                .requestMatchers("/ws/**").permitAll()
+                .requestMatchers("/uploads/**").permitAll()
+                .requestMatchers(
+                        "/api/payments/**"
+                ).authenticated()
+                .anyRequest().authenticated()
                 )
-
                 .addFilterBefore(
                         jwtFilter(),
                         UsernamePasswordAuthenticationFilter.class
@@ -75,34 +67,25 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-
-        CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.setAllowedOrigins(
-                Arrays.stream(corsAllowedOrigins.split(","))
-                        .map(String::trim)
-                        .filter(origin -> !origin.isBlank())
-                        .toList()
-        );
-
-
-        configuration.setAllowedMethods(
-                List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
-        );
-
-        configuration.setAllowedHeaders(
-                List.of("*")
-        );
-
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-
-        source.registerCorsConfiguration("/**", configuration);
-
-        return source;
-    }
-}
+//     @Bean
+//     public CorsConfigurationSource corsConfigurationSource() {
+//         CorsConfiguration configuration = new CorsConfiguration();
+//         configuration.setAllowedOrigins(
+//                 Arrays.stream(corsAllowedOrigins.split(","))
+//                         .map(String::trim)
+//                         .filter(origin -> !origin.isBlank())
+//                         .toList()
+//         );
+//         configuration.setAllowedMethods(
+//                 List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//         );
+//         configuration.setAllowedHeaders(
+//                 List.of("*")
+//         );
+//         configuration.setAllowCredentials(true);
+//         UrlBasedCorsConfigurationSource source =
+//                 new UrlBasedCorsConfigurationSource();
+//         source.registerCorsConfiguration("/**", configuration);
+//         return source;
+//     }
+// }
