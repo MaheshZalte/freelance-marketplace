@@ -1,6 +1,5 @@
 package com.freelance.demo.config;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -22,12 +21,11 @@ public class CorsConfig {
         CorsConfiguration configuration
                 = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(
-                Arrays.stream(
-                        corsAllowedOrigins.split(",")
+        configuration.setAllowedOriginPatterns(
+                List.of(
+                        "https://*.vercel.app",
+                        "http://localhost:5173"
                 )
-                        .map(String::trim)
-                        .toList()
         );
 
         configuration.setAllowedMethods(
