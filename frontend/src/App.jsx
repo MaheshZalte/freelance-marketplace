@@ -14,9 +14,9 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Payments from "./pages/Payments";
 import RoleProtectedRoute from "./routes/RoleProtectedRoute";
 import Chat from "./pages/Chat";
-import { updateOnlineStatus } from "./services/authService";
+// import { updateOnlineStatus } from "./services/authService";
 
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 // import { isAuthenticated } from "./utils/auth";
 import MyApplications from "./pages/MyApplications";
