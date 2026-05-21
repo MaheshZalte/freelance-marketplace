@@ -14,6 +14,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Payments from "./pages/Payments";
 import RoleProtectedRoute from "./routes/RoleProtectedRoute";
 import Chat from "./pages/Chat";
+import Dashboard from "./pages/Dashboard";
 // import { updateOnlineStatus } from "./services/authService";
 
 // import { useEffect } from "react";
@@ -65,9 +66,16 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-
         <Route path="/login" element={<Login />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="/register" element={<Register />} />
 
