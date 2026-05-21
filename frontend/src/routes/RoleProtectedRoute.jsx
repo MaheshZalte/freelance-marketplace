@@ -1,42 +1,41 @@
 import { Navigate }
-from "react-router-dom";
+  from "react-router-dom";
 
-import {
-  getUser,
-  getToken
-}
-from "../utils/auth";
+import { getUser }
+  from "../utils/auth";
 
-function RoleProtectedRoute({
-
+const RoleProtectedRoute = ({
   children,
-
-  allowedRoles,
-}) {
-
-  const token = getToken();
+  allowedRoles
+}) => {
 
   const user = getUser();
 
-  // NOT LOGGED IN
-  if (!token) {
+  if (!user) {
 
-    return <Navigate to="/login" />;
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
   }
 
-  // ROLE NOT ALLOWED
   if (
     !allowedRoles.includes(
-      user?.role
+      user.role
     )
   ) {
 
     return (
-      <Navigate to="/dashboard" />
+      <Navigate
+        to="/dashboard"
+        replace
+      />
     );
   }
 
   return children;
-}
+};
 
 export default RoleProtectedRoute;

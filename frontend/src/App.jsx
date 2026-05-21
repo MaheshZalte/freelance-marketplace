@@ -2,7 +2,6 @@ import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
 import Jobs from "./pages/Jobs";
 import CreateJob from "./pages/CreateJob";
 import JobDetails from "./pages/JobDetails";
@@ -19,46 +18,47 @@ import { updateOnlineStatus } from "./services/authService";
 
 import { useEffect } from "react";
 
-import { isAuthenticated } from "./utils/auth";
+// import { isAuthenticated } from "./utils/auth";
 import MyApplications from "./pages/MyApplications";
+import { isAuthenticated } from "./utils/auth";
 
 function App() {
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
 
-    // STOP IF NO TOKEN
-    if (!token) {
-      return;
-    }
+  //   // STOP IF NO TOKEN
+  //   if (!token) {
+  //     return;
+  //   }
 
-    const setOnline = async () => {
-      try {
-        await updateOnlineStatus(true);
-      } catch (error) {
-        console.log("ONLINE STATUS ERROR", error);
-      }
-    };
+  //   const setOnline = async () => {
+  //     try {
+  //       await updateOnlineStatus(true);
+  //     } catch (error) {
+  //       console.log("ONLINE STATUS ERROR", error);
+  //     }
+  //   };
 
-    setOnline();
+  //   setOnline();
 
-    const handleOffline = async () => {
-      try {
-        await updateOnlineStatus(false);
-      } catch (error) {
-        console.log("OFFLINE STATUS ERROR", error);
-      }
-    };
+  //   const handleOffline = async () => {
+  //     try {
+  //       await updateOnlineStatus(false);
+  //     } catch (error) {
+  //       console.log("OFFLINE STATUS ERROR", error);
+  //     }
+  //   };
 
-    window.addEventListener("beforeunload", handleOffline);
+  //   window.addEventListener("beforeunload", handleOffline);
 
-    window.addEventListener("pagehide", handleOffline);
+  //   window.addEventListener("pagehide", handleOffline);
 
-    return () => {
-      window.removeEventListener("beforeunload", handleOffline);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleOffline);
 
-      window.removeEventListener("pagehide", handleOffline);
-    };
-  }, []);
+  //     window.removeEventListener("pagehide", handleOffline);
+  //   };
+  // }, []);
 
   return (
     <BrowserRouter>
@@ -137,11 +137,13 @@ function App() {
         <Route path="/my-applications" element={<MyApplications />} />
 
         <Route
-          path="/dashboard"
+          path="/"
           element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
+            isAuthenticated() ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <Navigate to="/login" replace />
+            )
           }
         />
 
