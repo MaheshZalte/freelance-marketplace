@@ -1,12 +1,7 @@
-import { jwtDecode }
-  from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 export const getUserData = () => {
-
-  const token =
-    localStorage.getItem(
-      "token"
-    );
+  const token = localStorage.getItem("token");
 
   if (!token) {
     return null;
@@ -16,40 +11,25 @@ export const getUserData = () => {
 };
 
 export const getToken = () => {
-
-  return localStorage.getItem(
-    "token"
-  );
+  return localStorage.getItem("token");
 };
 
 export const getUser = () => {
+  const user = localStorage.getItem("user");
 
-  const user =
-    localStorage.getItem(
-      "user"
-    );
-
-  return user
-    ? JSON.parse(user)
-    : null;
+  return user ? JSON.parse(user) : null;
 };
 
-export const isAuthenticated =
-  () => {
+export const isAuthenticated = () => {
+  const token = localStorage.getItem("token");
 
-    return !!getToken();
+  return !!token;
 };
 
 export const logout = () => {
+  localStorage.removeItem("token");
 
-  localStorage.removeItem(
-    "token"
-  );
+  localStorage.removeItem("user");
 
-  localStorage.removeItem(
-    "user"
-  );
-
-  window.location.href =
-    "/login";
+  window.location.href = "/login";
 };

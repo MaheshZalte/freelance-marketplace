@@ -24,14 +24,29 @@ import MyApplications from "./pages/MyApplications";
 
 function App() {
   useEffect(() => {
-    if (!isAuthenticated()) {
+    const token = localStorage.getItem("token");
+
+    // STOP IF NO TOKEN
+    if (!token) {
       return;
     }
 
-    updateOnlineStatus(true);
+    const setOnline = async () => {
+      try {
+        await updateOnlineStatus(true);
+      } catch (error) {
+        console.log("ONLINE STATUS ERROR", error);
+      }
+    };
 
-    const handleOffline = () => {
-      updateOnlineStatus(false).catch(() => {});
+    setOnline();
+
+    const handleOffline = async () => {
+      try {
+        await updateOnlineStatus(false);
+      } catch (error) {
+        console.log("OFFLINE STATUS ERROR", error);
+      }
     };
 
     window.addEventListener("beforeunload", handleOffline);
@@ -44,7 +59,6 @@ function App() {
       window.removeEventListener("pagehide", handleOffline);
     };
   }, []);
-
 
   return (
     <BrowserRouter>
